@@ -55,6 +55,7 @@
 	daily_payments["Archivist"] = 10
 	daily_payments["Magicians Associate"] = 10
 	daily_payments["Jester"] = 6
+	daily_payments["Court Chaplain"] = 30
 
 /obj/structure/roguemachine/steward/attackby(obj/item/P, mob/user, params)
 	if(istype(P, /obj/item/roguekey))
