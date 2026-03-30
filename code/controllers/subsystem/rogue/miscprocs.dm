@@ -115,10 +115,20 @@
 		last_level = level
 	return TRUE
 
-/datum/devotion/proc/try_add_spells(silent = FALSE)
-	if(!holder || !holder.mind)
-		return
+/datum/devotion/proc/_is_learnmiracle_eligible(mob/living/carbon/human/H)
+	if(!H || !H.mind)
+		return FALSE
+	if(!HAS_TRAIT(H, TRAIT_CLERGYRADICAL))
+		return FALSE
 
+	var/txt = lowertext("[H.mind.assigned_role]")
+	return findtext(txt, "druid") || findtext(txt, "acolyte") || findtext(txt, "churchling")
+
+/datum/devotion/proc/try_add_spells(silent = FALSE)
+	if(!holder?.mind || !patron)
+		return FALSE
+	if(HAS_TRAIT(holder, TRAIT_CLERGYRADICAL))
+		return FALSE
 	if(patron)
 		if(length(patron.miracles))
 			for(var/spell_type in patron.miracles)
@@ -164,6 +174,11 @@
 	else
 		update_devotion(50, 50, silent = TRUE)
 	H.verbs += list(/mob/living/carbon/human/proc/devotionreport, /mob/living/carbon/human/proc/clericpray)
+
+	if(_is_learnmiracle_eligible(H))
+		if(!H.mind.has_spell(/obj/effect/proc_holder/spell/self/learnmiracle))
+			var/obj/effect/proc_holder/spell/self/learnmiracle/L = new
+			H.mind.AddSpell(L)
 
 // Debug verb
 /mob/living/carbon/human/proc/devotionchange()
