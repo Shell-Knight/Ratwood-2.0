@@ -61,29 +61,25 @@
 	to_chat(H, span_notice("I remain on the old path of devotion."))
 
 /datum/job/roguetown/monk/proc/grant_radical_path(mob/living/carbon/human/H)
-	if(!H || !H.mind)
-		return
-
-	if(HAS_TRAIT(H, TRAIT_CLERGYRADICAL))
+	if(!H || !H.mind || !H.patron)
 		return
 
 	ADD_TRAIT(H, TRAIT_CLERGYRADICAL, "job")
-
 	H.miracle_points += 7
 
-	H.change_stat(STATKEY_STR, -2)
-	H.change_stat(STATKEY_CON, -2)
-	H.change_stat(STATKEY_WIL, -3)
-	H.change_stat(STATKEY_SPD, 1)
-	H.change_stat(STATKEY_PER, 2)
-	H.change_stat(STATKEY_LCK, 2)
+	var/datum/devotion/C = new /datum/devotion(H, H.patron)
+	C.grant_miracles(H, cleric_tier = CLERIC_T4, passive_gain = CLERIC_REGEN_MAJOR, start_maxed = TRUE)
 
-	var/miracle_menu_path = /obj/effect/proc_holder/spell/self/learnmiracle
+	var/miracle_menu_path = text2path("/obj/effect/proc_holder/spell/self/learnmiracle")
 	if(miracle_menu_path)
 		if(!H.mind.has_spell(miracle_menu_path))
 			var/obj/effect/proc_holder/spell/S = new miracle_menu_path
 			if(S)
 				H.mind.AddSpell(S, H)
+
+	if(H.mind)
+		if(!H.mind.has_spell(/obj/effect/proc_holder/spell/invoked/projectile/divineblast))
+			H.mind.AddSpell(new /obj/effect/proc_holder/spell/invoked/projectile/divineblast, H)			
 
 	to_chat(H, span_notice("I embrace the radical path. (+7 Miracle Points)"))
 

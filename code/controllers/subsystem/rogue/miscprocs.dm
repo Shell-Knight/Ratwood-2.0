@@ -46,6 +46,8 @@
 	var/prayer_effectiveness = 2
 	/// Spells we have granted thus far
 	var/list/granted_spells
+	///suppress granting miracles updating from devotion level up
+	var/suppress_grants = FALSE
 
 /datum/devotion/New(mob/living/carbon/human/holder, datum/patron/patron)
 	. = ..()
@@ -116,23 +118,9 @@
 	return TRUE
 
 /datum/devotion/proc/_is_clergy_radical(mob/living/carbon/human/H)
-	if(!H || !H.mind)
+	if(!H)
 		return FALSE
-	var/list/cands = list()
-	if(("assigned_role" in H.mind.vars) && istext(H.mind.vars["assigned_role"]))
-		cands += lowertext("[H.mind.vars["assigned_role"]]")
-	if(("special_role" in H.mind.vars) && istext(H.mind.vars["special_role"]))
-		cands += lowertext("[H.mind.vars["special_role"]]")
-	if(("assigned_job" in H.mind.vars) && istype(H.mind.vars["assigned_job"], /datum/job))
-		var/datum/job/J = H.mind.vars["assigned_job"]
-		if(("title" in J.vars) && istext(J.vars["title"]))
-			cands += lowertext("[J.vars["title"]]")
-		if(("name" in J.vars) && istext(J.vars["name"]))
-			cands += lowertext("[J.vars["name"]]")
-	for(var/txt in cands)
-		if(findtext(txt, "acolyte"))
-			return TRUE
-	return FALSE
+	return HAS_TRAIT(H, TRAIT_CLERGYRADICAL)
 
 /datum/devotion/proc/_is_learnmiracle_eligible(mob/living/carbon/human/H)
 	if(!H || !H.mind)
@@ -143,6 +131,8 @@
 	if(!holder?.mind || !patron)
 		return FALSE
 	if(_is_clergy_radical(holder))
+		return FALSE
+	if(suppress_grants)
 		return FALSE
 	if(patron)
 		if(length(patron.miracles))
