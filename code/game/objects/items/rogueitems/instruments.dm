@@ -5,8 +5,6 @@
 	persistent_loop = TRUE
 	var/stress2give = /datum/stressevent/music
 	sound_group = /datum/sound_group/instruments
-	/// Channel held in reserve while not playing, so it doesn't block looping_sound internals.
-	var/parked_channel
 
 GLOBAL_LIST_EMPTY(instrument_band_lobbies)
 
@@ -146,28 +144,43 @@ GLOBAL_LIST_EMPTY(instrument_band_lobbies)
 			if(instrument.not_held)
 				holder.remove_status_effect(/datum/status_effect/buff/harpy_sing)
 
+/// Returns the singleton instruments sound group, cached after first lookup.
+/datum/looping_sound/instrument/proc/_get_sound_group()
+	var/static/datum/sound_group/instruments/cached
+	if(!cached)
+		for(var/datum/sound_group/g in GLOB.created_sound_groups)
+			if(istype(g, /datum/sound_group/instruments))
+				cached = g
+				break
+	return cached
+
 /datum/looping_sound/instrument/New(_parent, start_immediately=FALSE, _direct=FALSE, _channel = 0)
 	. = ..(_parent, FALSE, _direct, _channel)
-	// The sound group assigns a channel in the parent New(). Park it so the
-	// instrument doesn't hold an active channel while idle, but we keep the
-	// group-allocated channel so start() never needs reserve_sound_channel.
+	// Parent assigned a channel via round-robin; return it to the pool since
+	// channels are only held while actively playing, not while idle.
 	if(channel)
-		parked_channel = channel
+		_get_sound_group()?.return_channel(channel)
 		channel = null
 	if(start_immediately)
 		start()
+
+/datum/looping_sound/instrument/Destroy()
+	// If destroyed while actively playing, return the channel to the instruments
+	// pool rather than letting the base Destroy() leak it to SSsounds' general pool.
+	if(channel)
+		_get_sound_group()?.return_channel(channel)
+		channel = null
+	return ..()
 
 /datum/looping_sound/instrument/start(atom/on_behalf_of, sync_anchor)
 	if(sync_anchor)
 		starttime = sync_anchor
 	if(!channel)
-		if(!parked_channel)
-			// Fallback: group pool exhausted (>all simultaneous instruments).
+		channel = _get_sound_group()?.checkout_channel()
+		if(!channel)
 			var/atom/resolved_parent = parent?.resolve()
-			log_game("INSTRUMENT: No parked channel available for [resolved_parent] - all instrument group channels in use simultaneously.")
+			log_game("INSTRUMENT: All [/datum/sound_group/instruments::channel_count] instrument channels in use simultaneously - [resolved_parent]")
 			return FALSE
-		channel = parked_channel
-		parked_channel = null
 	..()
 	return TRUE
 
@@ -191,9 +204,8 @@ GLOBAL_LIST_EMPTY(instrument_band_lobbies)
 				SEND_SOUND(C, sound(null, repeat = 0, wait = 0, channel = stop_channel))
 			C.played_loops -= src
 		thingshearing = list()  // Clear AFTER parent and client loop are done.
-		// Return the channel to the parked state — don't free it via SSsounds
-		// since it belongs to the sound group, not the datum's own reservation.
-		parked_channel = channel
+		// Return the channel to the group pool so other instruments can use it.
+		_get_sound_group()?.return_channel(channel)
 		channel = null
 	else
 		. = ..(null_parent)
