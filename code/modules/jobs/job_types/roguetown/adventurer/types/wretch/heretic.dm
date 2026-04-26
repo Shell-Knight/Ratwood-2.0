@@ -180,7 +180,7 @@
 			var/heavypsyfashion_choice = input(H, "What is your faith in HIM like?", "HE LYVES, HE ENDURES, HE DIES") as anything in heavypsyfashion
 			switch(heavypsyfashion_choice)
 				if("Traditionalist") //You look like any other Heretic.
-					to_chat(H, span_warning("PSYDON LIVES, but HE sacrificed HIMSELF for us. We do not hear HIM, nor does HE hear us, but all roads lead to HIM, and back to us. One day, PSYDON will return and Creation will be at peace again, turning it into true PARADYSE. The Orthodoxy and the Holy See have twisted the scriptures, the tales. The Ten wish to turn the world to their own image, unwilling to help wake our LORD. Meanwhile, the Orthodoxists lie in His name, straying from the path of peace and filling the world with pain that HE, through all of Creation, feels, delaying HIS awakening. "))
+					to_chat(H, span_warning("PSYDON LYVES, but HE sacrificed HIMSELF for us. We do not hear HIM, nor does HE hear us, but all roads lead to HIM, and back to us. One day, PSYDON will return and Creation will be at peace again, turning it into true PARADYSE. The Orthodoxy and the Holy See have twisted the scriptures, the tales. The Ten wish to turn the world to their own image, unwilling to help wake our LORD. Meanwhile, the Orthodoxists lie in HIS name, straying from the path of peace and filling the world with pain that HE, through all of Creation, feels, delaying HIS awakening. "))
 					H.equip_to_slot_or_del(new /obj/item/clothing/neck/roguetown/psicross/silver, SLOT_RING, TRUE)
 					H.equip_to_slot_or_del(new /obj/item/clothing/head/roguetown/helmet/heavy/bucket, SLOT_HEAD, TRUE)
 					H.equip_to_slot_or_del(new /obj/item/clothing/cloak/templar/psydon, SLOT_CLOAK, TRUE)
