@@ -376,7 +376,7 @@
 		if(/datum/patron/old_god)
 			H.change_stat(STATKEY_WIL, 2) //ENDVRE. You give up useful miracles, rites and miracle-healing from other Heretics, so you'll need this.
 			var/lightpsyfashion = list("Traditionalist", "Orthodoxist", "Reformist")
-			var/lightpsyfashion_choice = input(H, "What is your faith in HIM like?", "HE LIVES, HE ENDURES, HE DIES") as anything in lightpsyfashion
+			var/lightpsyfashion_choice = input(H, "What is your faith in HIM like?", "HE LYVES, HE ENDURES, HE DIES") as anything in lightpsyfashion
 			switch(lightpsyfashion_choice)
 				if("Traditionalist") //You look like any other Heretic Spy.
 					to_chat(H, span_warning("The Otavan Orthodoxy has distorted the faith beyond recognition, they worship not HIM, but mere eidolons and idols of TRUE DIVINITY. Return to tradition, return to form."))
