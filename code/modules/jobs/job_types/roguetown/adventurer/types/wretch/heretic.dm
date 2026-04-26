@@ -204,7 +204,7 @@
 						if("Bucket Helm")
 							H.equip_to_slot_or_del(new /obj/item/clothing/head/roguetown/helmet/heavy/psybucket, SLOT_HEAD, TRUE)
 				if("Reformist") //You look like as if somebody dressed Freifechter into a lot of armour. Better chestpiece, but worse gloves and boots, and worse padded gambeson.
-					to_chat(H, span_warning ("PSYDON fell after his battle against the great evil. But HE LIVES through us, in Oour memory and our bleeding hearts. As long as we LIVE, so shall HE, through us. All shall be as HE deemed, in HIS name, as HE did."))
+					to_chat(H, span_warning ("PSYDON fell after his battle against the great evil. But HE LYVES through us, in our memory and our bleeding hearts. As long as we LYVE, so shall HE, through us. All shall be as HE deemed, in HIS name, as HE did."))
 					H.equip_to_slot_or_del(new /obj/item/clothing/neck/roguetown/psicross/reform, SLOT_RING, TRUE)
 					H.equip_to_slot_or_del(new /obj/item/clothing/head/roguetown/helmet/heavy/knight/armet, SLOT_HEAD, TRUE)
 					H.equip_to_slot_or_del(new /obj/item/clothing/suit/roguetown/armor/plate/fluted, SLOT_ARMOR, TRUE)
