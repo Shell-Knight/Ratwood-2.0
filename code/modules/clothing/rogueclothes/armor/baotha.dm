@@ -133,9 +133,11 @@
 
 
 /obj/item/storage/belt/rogue/leather/plaquegold/baotha
-	name = "baothan waist-belt"
-	icon = 'icons/roguetown/clothing/neck.dmi'
-	icon_state = "psybracelet"
+	name = "baothan hip-links"
+	desc = "Baothan magicks keep your equipment held snug without obscuring the view."
+	icon = 'icons/roguetown/clothing/feet.dmi'
+	icon_state = "anklets"
+	color = "#9c7373"
 	mob_overlay_icon = null
 
 /obj/item/storage/belt/rogue/leather/plaquegold/baotha/Initialize(mapload)
