@@ -55,8 +55,6 @@
 		/datum/crafting_recipe/roguetown/survival/flowercrown_rosa,
 		/datum/crafting_recipe/roguetown/survival/flowercrown_salvia,
 		/datum/crafting_recipe/roguetown/survival/slingpouchcraft,
-		/datum/crafting_recipe/roguetown/survival/oar,
-		/datum/crafting_recipe/roguetown/survival/boat,
 		)
 
 	AddElement(
