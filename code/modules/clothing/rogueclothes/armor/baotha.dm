@@ -1,22 +1,24 @@
 
-/obj/item/clothing/suit/roguetown/armor/plate/half/baotha
+/obj/item/clothing/suit/roguetown/armor/plate/baotha
 	name = "baothan cuirass"
 	desc = "A mighty muscled cuirass. Powerful Baothan Magycks protect the exposed flesh that glints tantalising between plates."
 	icon = 'icons/roguetown/clothing/special/baotha.dmi'
 	mob_overlay_icon = 'icons/roguetown/clothing/special/onmob/baotha.dmi'
 	icon_state = "baothachest"
 	item_state = "baothachest"
-	body_parts_covered = CHEST|VITALS|GROIN
+	armor = ARMOR_ASCENDANT
 	max_integrity = ARMOR_INT_CHEST_PLATE_ANTAG
+	equip_delay_self = 2 SECONDS
+	unequip_delay_self = 2 SECONDS
 	// peel_threshold = 5	//-Any- weapon will require 5 peel hits to peel coverage off of this armor.
 
-/obj/item/clothing/suit/roguetown/armor/plate/half/baotha/Initialize(mapload)
+/obj/item/clothing/suit/roguetown/armor/plate/baotha/Initialize(mapload)
 	. = ..()
 	// ADD_TRAIT(src, TRAIT_NODROP, CURSED_ITEM_TRAIT)
 	AddComponent(/datum/component/cursed_item, TRAIT_DEPRAVED, "ARMOR")
 	// AddComponent(/datum/component/item_equipped_movement_rustle, null)
 
-// /obj/item/clothing/suit/roguetown/armor/plate/half/baotha/dropped(mob/living/carbon/human/user)
+// /obj/item/clothing/suit/roguetown/armor/plate/baotha/dropped(mob/living/carbon/human/user)
 // 	. = ..()
 // 	if(QDELETED(src))
 // 		return
@@ -61,6 +63,7 @@
 	alternate_worn_layer = WRISTS_LAYER
 	prevent_crits = list(BCLASS_CUT, BCLASS_STAB, BCLASS_CHOP, BCLASS_BLUNT, BCLASS_SMASH, BCLASS_PICK)
 	max_integrity = ARMOR_INT_SIDE_ANTAG
+	unequip_delay_self = 2 SECONDS
 
 /obj/item/clothing/wrists/roguetown/bracers/baotha/Initialize(mapload)
 	. = ..()
@@ -114,7 +117,7 @@
 	for(var/I in items)
 		H.dropItemToGround(I, TRUE)
 	H.drop_all_held_items()
-	armor = /obj/item/clothing/suit/roguetown/armor/plate/half/baotha
+	armor = /obj/item/clothing/suit/roguetown/armor/plate/baotha
 	shirt = /obj/item/clothing/suit/roguetown/armor/leather/studded/baotha
 	pants = /obj/item/clothing/under/roguetown/platelegs/baotha
 	wrists = /obj/item/clothing/wrists/roguetown/bracers/baotha
