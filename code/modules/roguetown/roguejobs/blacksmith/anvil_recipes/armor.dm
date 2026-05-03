@@ -475,15 +475,9 @@
 	name = "Chain Kilt, Steel"
 	created_item = /obj/item/clothing/under/roguetown/chainlegs/kilt
 
-/datum/anvil_recipe/armor/steel/brayette
-	name = "Brayette, Steel (x2)"
-	created_item = /obj/item/clothing/under/roguetown/brayette
-	createditem_num = 2
-
 /datum/anvil_recipe/armor/steel/chainskirt
-	name = "Chain Skirt, Steel (x2)"
+	name = "Chain Skirt, Steel"
 	created_item = /obj/item/clothing/under/roguetown/chainlegs/skirt
-	createditem_num = 2
 
 /datum/anvil_recipe/armor/steel/plateskirt
 	name = "Plate Tassets, Steel (+1 Steel)"
