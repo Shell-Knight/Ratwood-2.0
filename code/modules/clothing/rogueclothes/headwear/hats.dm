@@ -288,6 +288,7 @@
 	min_cold_protection_temperature = BODYTEMP_COLD_LEVEL_ONE_MAX
 	heat_protection = HEAD
 	max_heat_protection_temperature = BODYTEMP_HEAT_LEVEL_ONE_MAX
+	resistance_flags = FIRE_PROOF // drip is eternal
 
 /obj/item/clothing/head/roguetown/headband/red
 	color = CLOTHING_RED
