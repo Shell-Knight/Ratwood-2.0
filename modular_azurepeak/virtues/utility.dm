@@ -203,6 +203,12 @@
 		var/instrument_type = instruments[chosen_name]
 		recipient.mind?.special_items[chosen_name] = instrument_type
 
+/datum/virtue/utility/mean
+	name = "Acquired Tastes"
+	desc = "Despite your unorthodox tastes, you know how to keep a partner off-guard and on their back. Sometimes accidents happen in the heat of passion or you enjoy making them, sharing a bed with you is a gamble. You're always prepared to handle a guest with the toys you keep stashed."
+	added_traits = list(TRAIT_DEATHBYSNUSNU, TRAIT_NUTCRACKER)
+	added_stashed_items = list("Bag of Fetish Gear" = /obj/item/storage/roguebag/fetish)
+
 /datum/virtue/utility/larcenous
 	name = "Larcenous"
 	desc = "Whether it was asked of you, or by a calling for the rush deep within your hollow heart, you seek things that don't belong you. You know how to work a lock, and have stashed a ring of them, for just the occasion."
