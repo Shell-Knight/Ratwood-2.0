@@ -358,18 +358,24 @@
 		if(info)
 			. += "<a href='?src=[REF(src)];read=1'>Read</a>"
 	else
-		. += "It's from [mailer], addressed to [mailedto].</a>"
+		. += "It's from [mailer], addressed to [mailedto]."
+		if(isobserver(user) && IsAdminGhost(user))
+			. += "<a href='?src=[REF(src)];read=1'>Read (Admin)</a>"
 
 /obj/item/paper/proc/read(mob/user)
-	if(!user.client || !user.hud_used)
+	if(!user.client)
 		return
-	if(!user.hud_used.reads)
+	var/admin_observer = isobserver(user) && IsAdminGhost(user)
+	if(!user.hud_used)
+		if(!admin_observer)
+			return
+	else if(!admin_observer && !user.hud_used.reads)
 		return
-	if(!user.can_read(src))
+	if(!admin_observer && !user.can_read(src))
 		if(info)
 			user.adjust_experience(/datum/skill/misc/reading, 2, FALSE)
 		return
-	if(mailer)
+	if(!admin_observer && mailer)
 		return
 	if(seal_label && !seal_broken)
 		to_chat(user, span_warning("The wax seal is still intact. I need to unseal it first."))
@@ -580,7 +586,8 @@
 			user << browse(null, "window=reading")
 
 	var/literate = usr.is_literate()
-	if(!usr.canUseTopic(src, BE_CLOSE, literate))
+	var/admin_observer = isobserver(usr) && IsAdminGhost(usr)
+	if(!admin_observer && !usr.canUseTopic(src, BE_CLOSE, literate))
 		return
 
 	if(href_list["read"])
