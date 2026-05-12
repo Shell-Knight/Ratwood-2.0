@@ -184,13 +184,13 @@
 			say("Suppliers will only agree to modifying deals at times when Astrata shines.")
 			return
 		var/newrate = input(usr, "Set a new rate for remote imports for [D.name]", src, D.passive_generation) as null|num
-		if(newrate)
+		if(!isnull(newrate))
 			if(!usr.canUseTopic(src, BE_CLOSE) || locked)
 				return
 			if(findtext(num2text(newrate), "."))
 				return
 			newrate = CLAMP(newrate, 0, D.generation_max)
-			scom_announce("Rotwood Vale will now import [newrate] [D.name] every 5 hours.")
+			scom_announce("Rotwood Vale will [newrate ? "now import [newrate] [D.name] every 5 hours." : "no longer import [D.name] periodically"]")
 			D.passive_generation = newrate
 	if(href_list["setlimit"])
 		var/datum/roguestock/D = locate(href_list["setlimit"]) in SStreasury.stockpile_datums
