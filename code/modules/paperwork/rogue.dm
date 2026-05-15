@@ -415,13 +415,13 @@
 		update_icon()
 
 /obj/item/paper/inqslip/attack_right(mob/user)
-	. = ..()
-	if(paired)
-		if(!user.get_active_held_item())
-			user.put_in_active_hand(paired, user.active_hand_index)
-			paired = null
-			update_icon()
+	if(paired && !user.get_active_held_item())
+		user.put_in_active_hand(paired, user.active_hand_index)
+		paired = null
+		update_icon()
 		return TRUE
+	attack_self(user)
+	return TRUE
 
 /obj/item/paper/inqslip/update_icon_state()
 	. = ..()
@@ -448,7 +448,7 @@
 	if(!signee)
 		signee = user
 
-/obj/item/paper/inqslip/attacked_by(obj/item/I, mob/living/user)
+/obj/item/paper/inqslip/attackby(obj/item/I, mob/living/carbon/human/user, params)
 	if(istype(I, /obj/item/seal))
 		to_chat(user, span_warning("I must use a Signet Ring for Inquisitorial Missives"))
 		return
@@ -465,10 +465,13 @@
 			S.update_icon()
 			playsound(src, 'sound/items/inqslip_sealed.ogg', 75, TRUE, 4)
 			marquevalue += 2
+			return
 		else if(S.tallowed && !sealed)
 			to_chat(user,  span_warning("I need to fold the [src] first."))
+			return
 		else
 			to_chat(user,  span_warning("The ring hasn't been waxed."))
+			return
 
 	if(sliptype != 1)
 		if(istype(I, /obj/item/inqarticles/indexer))
@@ -501,9 +504,9 @@
 					update_icon()
 			else
 				to_chat(user,  span_warning("[Q] isn't completely full."))
+			return
 
-/obj/item/paper/inqslip/attack_right(mob/user)
-	. = ..()
+	return ..()
 
 /obj/item/paper/scroll/sell_price_changes
 	name = "updated purchasing prices"
