@@ -368,23 +368,27 @@
 			return
 
 	if(istype(P, /obj/item/paper/inqslip/arrival))
-		if((HAS_TRAIT(user, TRAIT_INQUISITION) || HAS_TRAIT(user, TRAIT_PURITAN)))
-			var/obj/item/paper/inqslip/arrival/I = P
-			if(I.signee && I.signed)
-				message_admins("INQ ARRIVAL: [user.real_name] ([user.ckey]) has just arrived as a [user.job], earning [I.marquevalue] Marques.")
-				log_game("INQ ARRIVAL: [user.real_name] ([user.ckey]) has just arrived as a [user.job], earning [I.marquevalue] Marques.")
-				budget2change(I.marquevalue, user, "MARQUE")
-				record_round_statistic(STATS_MARQUES_MADE, I.marquevalue)
-				qdel(I)
-				visible_message(span_warning("[user] sends something."))
-				playsound(loc, 'sound/misc/otavasent.ogg', 100, FALSE, -1)
-				playsound(loc, 'sound/misc/disposalflush.ogg', 100, FALSE, -1)
+		if(!(HAS_TRAIT(user, TRAIT_INQUISITION) || HAS_TRAIT(user, TRAIT_PURITAN)))
+			to_chat(user, span_warning("Only the Inquisition can submit arrival slips."))
 			return
+		var/obj/item/paper/inqslip/arrival/I = P
+		if(I.signee && I.signed)
+			message_admins("INQ ARRIVAL: [user.real_name] ([user.ckey]) has just arrived as a [user.job], earning [I.marquevalue] Marques.")
+			log_game("INQ ARRIVAL: [user.real_name] ([user.ckey]) has just arrived as a [user.job], earning [I.marquevalue] Marques.")
+			budget2change(I.marquevalue, user, "MARQUE")
+			record_round_statistic(STATS_MARQUES_MADE, I.marquevalue)
+			qdel(I)
+			visible_message(span_warning("[user] sends something."))
+			playsound(loc, 'sound/misc/otavasent.ogg', 100, FALSE, -1)
+			playsound(loc, 'sound/misc/disposalflush.ogg', 100, FALSE, -1)
+		return
 
 	if(istype(P, /obj/item/paper/inqslip/accusation))
-		if((HAS_TRAIT(user, TRAIT_INQUISITION) || HAS_TRAIT(user, TRAIT_PURITAN)))
-			var/obj/item/paper/inqslip/accusation/I = P
-			if(I.paired)
+		if(!(HAS_TRAIT(user, TRAIT_INQUISITION) || HAS_TRAIT(user, TRAIT_PURITAN)))
+			to_chat(user, span_warning("Only the Inquisition can submit accusation slips."))
+			return
+		var/obj/item/paper/inqslip/accusation/I = P
+		if(I.paired)
 				if(I.signee && I.paired.full && I.paired.subject)
 					var/no
 					var/specialno
