@@ -476,11 +476,11 @@
 					playsound(loc, 'sound/misc/otavanlament.ogg', 100, FALSE, -1)
 					playsound(loc, 'sound/misc/disposalflush.ogg', 100, FALSE, -1)
 					return
-				   if(!I.paired.full)
-					   to_chat(user, span_warning("[I.paired] needs to be full of the accused's blood."))
-					   return
-				   to_chat(user, span_warning("[I] is missing a signature."))
-				   return
+	if(!I.paired.full)
+		to_chat(user, span_warning("[I.paired] needs to be full of the accused's blood."))
+		return
+	to_chat(user, span_warning("[I] is missing a signature."))
+	return
 			else
 				to_chat(user, span_warning("[I] is missing an INDEXER."))
 				return
