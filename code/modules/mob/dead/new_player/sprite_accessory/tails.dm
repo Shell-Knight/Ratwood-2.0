@@ -444,10 +444,10 @@
 
 // Not caustic cove, i just wanted it at the bottom tee hee.
 /datum/sprite_accessory/tail/tailmaw
-    name = "Tailmaw"
-    icon_state = "tailmaw"
+	name = "Tailmaw"
+	icon_state = "tailmaw"
 
 /datum/sprite_accessory/tail/tailmaw2
-    name = "Tailmaw (Wag)"
-    icon_state = "tailmaw2"
-    can_wag = TRUE
+	name = "Tailmaw (Wag)"
+	icon_state = "tailmaw2"
+	can_wag = TRUE
