@@ -15,9 +15,8 @@
 	allowed_patrons = COURTCHAPLAIN_PATRONS
 	allowed_sexes = list(MALE, FEMALE)
 	outfit = /datum/outfit/job/roguetown/chaplain
-	tutorial = "The time most acolytes put towards reaching deeper into the ways of magic and miracle, you spent memorising catechisms, building connections and communicating the good word to those most important. Liasing between church and court as advisor and diplomat on spiritual matters, your task is to negotiate, mediate and advise the court against unpious decisions. \
-Some call you a scheming manipulator, twisting the Duke's ear towards the will of the Bishop, a spy on their behalf. Others suspect, in hushed tones, that the Duke may come to prefer your sweet whispers to the Prelate's. Perhaps you are simply drawn to the safety and luxury of court-living.\
-Only when swords are drawn might your true loyalties be discovered."
+	tutorial = "The time most acolytes put towards the ways of magic and miracle, you spent studying history and building connections. Liasing between church and court, you are an advisor and diplomat on spiritual matters. Your task is to negotiate, mediate and advise the court against unpious decisions. \
+	Some call you a scheming manipulator, a spy on the other church's behalf. Others suspect the Duke may come to prefer your sweet whispers to the Bishop's. Perhaps you are simply drawn to the safety and luxury of court-living."
 	display_order = JDO_CHAPLAIN
 	give_bank_account = TRUE
 	min_pq = 5
@@ -33,10 +32,9 @@ Only when swords are drawn might your true loyalties be discovered."
 
 /datum/advclass/chaplain
 	name = "Court Chaplain"
-	tutorial = "The time most acolytes put towards reaching deeper into the ways of magic and miracle, you spent memorising catechisms, building connections with the Holy See and communicating the good word to those most important. Liasing between church and court as advisor and diplomat on spiritual matters, your task is to negotiate, mediate and advise the court against unpious decisions. \
-Some call you a scheming manipulator, twisting the Duke's ear towards the will of the Bishop, a spy on their behalf. Others suspect, in hushed tones, that the Duke may come to prefer your sweet whispers to the Prelate's. Perhaps you are simply drawn to the safety and luxury of court-living.\
-Only when swords are drawn might your true loyalties be discovered."
-	outfit = /datum/outfit/job/roguetown/chaplain/basic
+	tutorial = "The time most acolytes put towards the ways of magic and miracle, you spent studying history and building connections. Liasing between church and court, you are an advisor and diplomat on spiritual matters. Your task is to negotiate, mediate and advise the court against unpious decisions. \
+	Some call you a scheming manipulator, a spy on the other church's behalf. Others suspect the Duke may come to prefer your sweet whispers to the Bishop's. Perhaps you are simply drawn to the safety and luxury of court-living."
+	outfit = /datum/outfit/job/roguetown/chaplain
 	subclass_languages = list(/datum/language/grenzelhoftian)
 	category_tags = list(CTAG_CHAPLAIN)
 	subclass_stats = list(
@@ -66,7 +64,7 @@ Only when swords are drawn might your true loyalties be discovered."
 	has_loadout = TRUE
 	job_bitflag = BITFLAG_HOLY_WARRIOR
 
-/datum/outfit/job/roguetown/chaplain/basic/pre_equip(mob/living/carbon/human/H)
+/datum/outfit/job/roguetown/chaplain/pre_equip(mob/living/carbon/human/H)
 	..()
 	H.adjust_blindness(-3)
 	belt = /obj/item/storage/belt/rogue/leather/rope
@@ -119,7 +117,7 @@ Only when swords are drawn might your true loyalties be discovered."
 		// 	shoes = /obj/item/clothing/shoes/roguetown/boots
 		// 	pants = /obj/item/clothing/under/roguetown/trou/leather/mourning
 		// 	cloak = /obj/item/clothing/cloak/templar/pestran
-		if(/datum/patron/divine/eora) //Eora content from Stonekeep
+		if(/datum/patron/divine/eora)
 			mask = /obj/item/clothing/head/roguetown/eoramask
 			neck = /obj/item/clothing/neck/roguetown/psicross/eora
 			shoes = /obj/item/clothing/shoes/roguetown/sandals
@@ -160,12 +158,12 @@ Only when swords are drawn might your true loyalties be discovered."
 	var/datum/devotion/C = new /datum/devotion(H, H.patron)
 	C.grant_miracles(H, cleric_tier = CLERIC_T1, passive_gain = CLERIC_REGEN_MINOR, devotion_limit = CLERIC_REQ_1)
 
-/datum/outfit/job/roguetown/chaplain/basic/choose_loadout(mob/living/carbon/human/H)
+/datum/outfit/job/roguetown/chaplain/choose_loadout(mob/living/carbon/human/H)
 	. = ..()
 	if(H.age == AGE_OLD)
 		H.adjust_skillrank(/datum/skill/magic/holy, 1, TRUE)
-	// -- Start of section for god specific bonuses --
 		ADD_TRAIT(H, TRAIT_STEELHEARTED, TRAIT_GENERIC)
+	// -- Start of section for god specific bonuses --
 	if(H.patron?.type == /datum/patron/divine/astrata) // Light and Guidance - Like ravox, they probably can endure seeing some shit.
 		H.adjust_skillrank(/datum/skill/magic/holy, 1, TRUE)
 		ADD_TRAIT(H, TRAIT_STEELHEARTED, TRAIT_GENERIC)
