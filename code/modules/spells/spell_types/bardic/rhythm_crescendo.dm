@@ -2,12 +2,15 @@
 #define RHYTHM_RESONATING 1
 #define RHYTHM_CONCUSSIVE 2
 #define RHYTHM_REGENERATING 3
+#define RHYTHM_MALAISE 4
 
 #define RHYTHM_COOLDOWN 9 SECONDS
 #define RHYTHM_WINDOW 8 SECONDS
 #define RHYTHM_RESONATING_DAMAGE 20
 #define RHYTHM_REGEN_DURATION 10 SECONDS
 #define RHYTHM_REGEN_TICK 0.5
+#define RHYTHM_MALAISE_DURATION 3 SECONDS
+#define RHYTHM_MALAISE_SLOWDOWN 0.2
 
 #define CRESCENDO_STACKS 3
 #define CRESCENDO_DECAY 20 SECONDS
@@ -28,6 +31,8 @@
 			return "Concussive"
 		if(RHYTHM_REGENERATING)
 			return "Regenerating"
+		if(RHYTHM_MALAISE)
+			return "Malaise"
 	return "Unknown"
 
 /proc/bardic_get_frontal_turfs(mob/living/user)
@@ -234,6 +239,39 @@
 	to_chat(user, span_info("A soothing rhythm mends my wounds."))
 	playsound(user, 'sound/magic/heal.ogg', 40, TRUE)
 
+/obj/effect/proc_holder/spell/self/rhythm/malaise
+	name = "Malaise Rhythm"
+	desc = "Prime a strike that leaves the target sluggish for a short time."
+	action_icon_state = "rhythm_frigid"
+	rhythm_type = RHYTHM_MALAISE
+
+/obj/effect/proc_holder/spell/self/rhythm/malaise/apply_rhythm(mob/living/target, mob/living/user)
+	target.apply_status_effect(/datum/status_effect/debuff/bardic_malaise)
+	target.visible_message(span_danger("[target] staggers under a draining malaise!"), span_userdanger("A draining malaise makes my limbs heavy!"))
+	playsound(target, 'sound/magic/debuffroll.ogg', 40, TRUE)
+
+/datum/status_effect/debuff/bardic_malaise
+	id = "bardic_malaise"
+	alert_type = /atom/movable/screen/alert/status_effect/debuff/bardic_malaise
+	duration = RHYTHM_MALAISE_DURATION
+
+/atom/movable/screen/alert/status_effect/debuff/bardic_malaise
+	name = "Malaise"
+	desc = "A cold, draining rhythm weighs down your limbs."
+	icon_state = "chilled"
+
+/datum/status_effect/debuff/bardic_malaise/on_apply()
+	. = ..()
+	var/mob/living/carbon/C = owner
+	if(istype(C))
+		C.add_movespeed_modifier("bardic_malaise", multiplicative_slowdown = RHYTHM_MALAISE_SLOWDOWN)
+
+/datum/status_effect/debuff/bardic_malaise/on_remove()
+	var/mob/living/carbon/C = owner
+	if(istype(C))
+		C.remove_movespeed_modifier("bardic_malaise")
+	return ..()
+
 /datum/status_effect/buff/healing/rhythm_regen
 	id = "rhythm_regen"
 	alert_type = /atom/movable/screen/alert/status_effect/buff/healing
@@ -315,6 +353,8 @@
 			crescendo_concussive(H)
 		if(RHYTHM_REGENERATING)
 			crescendo_regenerating(H)
+		if(RHYTHM_MALAISE)
+			crescendo_malaise(H)
 	H.inspiration.rhythm_tracker.greater_stacks = 0
 	H.inspiration.rhythm_tracker.last_rhythm_type = RHYTHM_NONE
 
@@ -375,6 +415,15 @@
 		ally.apply_status_effect(/datum/status_effect/buff/healing/crescendo_mending)
 		new /obj/effect/temp_visual/heal_rogue(get_turf(ally))
 		to_chat(ally, span_info("A mending melody washes over me."))
+
+/obj/effect/proc_holder/spell/self/crescendo/proc/crescendo_malaise(mob/living/carbon/human/user)
+	for(var/turf/T in bardic_get_frontal_turfs(user))
+		new /obj/effect/temp_visual/kinetic_blast(T)
+		for(var/mob/living/L in T)
+			if(L == user || L.stat == DEAD)
+				continue
+			L.apply_status_effect(/datum/status_effect/debuff/bardic_malaise)
+			L.visible_message(span_danger("[L] is overcome by a draining malaise!"))
 
 /datum/status_effect/buff/healing/crescendo_mending
 	id = "crescendo_mending"
