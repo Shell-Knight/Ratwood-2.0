@@ -35,10 +35,10 @@
 	id = "resoluterefrain"
 	alert_type = /atom/movable/screen/alert/status_effect/buff/song/resolute_refrain
 	duration = 15 SECONDS
-	effectedstats = list(STATKEY_CON = 2)
+	effectedstats = list(STATKEY_CON = 1)
 
 /datum/status_effect/buff/song/resolute_refrain/t2
-	effectedstats = list(STATKEY_CON = 3)
+	effectedstats = list(STATKEY_CON = 2)
 
 /datum/status_effect/buff/song/resolute_refrain/t3
-	effectedstats = list(STATKEY_CON = 4)
+	effectedstats = list(STATKEY_CON = 3)
