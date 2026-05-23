@@ -706,10 +706,17 @@ Inquisitorial armory down here
 	START_PROCESSING(SSobj, src)	// For making sure it melts.
 
 /obj/item/inqarticles/tallowpot/Destroy()
+	loaded_tallow = null
 	. = ..()
 	STOP_PROCESSING(SSobj, src)
 
 /obj/item/inqarticles/tallowpot/process()
+	if(loaded_tallow && QDELETED(loaded_tallow))
+		loaded_tallow = null
+		loaded_inquisitorial_tallow = FALSE
+		remaining = 0
+		update_icon()
+
 	if(heatedup > 0)
 		heatedup -= 4
 		remaining = max(remaining - -20, 0)
@@ -721,8 +728,9 @@ Inquisitorial armory down here
 				messageshown = 1
 			update_icon()
 	if(remaining == 0)
-		qdel(loaded_tallow)
-		loaded_tallow = initial(loaded_tallow)
+		if(loaded_tallow && !QDELETED(loaded_tallow))
+			qdel(loaded_tallow)
+		loaded_tallow = null
 		loaded_inquisitorial_tallow = FALSE
 		update_icon()
 
@@ -731,11 +739,11 @@ Inquisitorial armory down here
 	if(istype(I, /obj/item/reagent_containers/food/snacks/tallow/soft) || istype(I, /obj/item/reagent_containers/food/snacks/tallow/red))
 		if(!loaded_tallow)
 			var/obj/item/reagent_containers/food/snacks/tallow/Q = I
-			loaded_tallow = Q
-			loaded_inquisitorial_tallow = istype(I, /obj/item/reagent_containers/food/snacks/tallow/red)
-			user.transferItemToLoc(Q, src, TRUE)
-			remaining = 300
-			update_icon()
+			if(user.transferItemToLoc(Q, src, TRUE))
+				loaded_tallow = Q
+				loaded_inquisitorial_tallow = istype(I, /obj/item/reagent_containers/food/snacks/tallow/red)
+				remaining = 300
+				update_icon()
 		else
 			to_chat(user, span_info("The [src] already has [loaded_tallow] in it."))
 
@@ -766,7 +774,7 @@ Inquisitorial armory down here
 
 /obj/item/inqarticles/tallowpot/examine(mob/user)
 	. = ..()
-	if(!loaded_tallow)
+	if(!loaded_tallow || QDELETED(loaded_tallow))
 		. += span_info("It is empty.")
 		return
 	if(loaded_inquisitorial_tallow)
@@ -781,7 +789,7 @@ Inquisitorial armory down here
 
 /obj/item/inqarticles/tallowpot/update_icon()
 	. = ..()
-	if(loaded_tallow)
+	if(loaded_tallow && !QDELETED(loaded_tallow))
 		if(istype(loaded_tallow, /obj/item/reagent_containers/food/snacks/tallow/soft))
 			icon_state = "tallowpot_filled_soft"
 			if(heatedup)
