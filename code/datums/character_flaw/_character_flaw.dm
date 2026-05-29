@@ -418,7 +418,7 @@ GLOBAL_LIST_INIT(character_flaws, list(
 		H.compliance = 0
 		H.remove_status_effect(/datum/status_effect/compliance)
 
-/datum/charflaw/assassinmarked
+/datum/charflaw/assassintarget
 	name = "Marked for Death"
 	desc = "Something in my past has made me a target. I'm always looking over my shoulder.<br>\
 	YOU MAY BE PERMANENTLY REMOVED FROM THE ROUND WITHOUT ESCALATION BY YOUR ASSASSIN!"
