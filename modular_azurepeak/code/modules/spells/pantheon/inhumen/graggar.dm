@@ -70,7 +70,7 @@
 		return
 
 	var/obj/item/net/unholy_grasp/net = new(get_turf(carbon))
-	net.slipouttime = max(2 SECONDS, 10 SECONDS - max(0, carbon.STASTR - 10) * 0.5 SECONDS)
+	net.slipouttime = max(2 SECONDS, 13 SECONDS - max(0, carbon.STASTR - 10) * 0.5 SECONDS)
 	visible_message(span_danger("\The [src] ensnares [carbon] in vicera!"))
 	to_chat(carbon, span_danger("\The [src] ensnares you!"))
 	carbon.legcuffed = net
@@ -94,10 +94,19 @@
 			M.update_inv_legcuffed()
 			if(M.has_status_effect(/datum/status_effect/debuff/netted))
 				M.remove_status_effect(/datum/status_effect/debuff/netted)
-		forceMove(M.loc)
+		var/turf/T = get_turf(M)
+		if(T)
+			forceMove(T)
 
-/obj/item/net/unholy_grasp/Destroy()
-	remove_effect()
+/obj/item/net/unholy_grasp/Destroy() //we avoud forceMove() my manna caused by destroy as its not good to put it together
+	if(iscarbon(loc))
+		var/mob/living/carbon/M = loc
+		if(M.legcuffed == src)
+			M.legcuffed = null
+			M.remove_movespeed_modifier(MOVESPEED_ID_NET_SLOWDOWN, TRUE)
+			M.update_inv_legcuffed()
+		if(M.has_status_effect(/datum/status_effect/debuff/netted))
+			M.remove_status_effect(/datum/status_effect/debuff/netted)
 	return ..()
 
 /obj/effect/proc_holder/spell/invoked/revel_in_slaughter
