@@ -41,6 +41,7 @@
 	if(timeleft(reptimer))
 		to_chat(loc, span_notice(repairmsg_stop))
 	deltimer(reptimer)
+	reptimer = null
 	return
 
 /// Start repairing the armor
