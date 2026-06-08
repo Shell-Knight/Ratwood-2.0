@@ -704,7 +704,7 @@
 			var/remaining_seconds = round(((growth_threshold - growth_progress) / (growth_threshold * 0.25)) * effective_fruit_time / 10)
 			var/minutes = round(remaining_seconds / 60)
 			var/secs = remaining_seconds % 60
-			. += span_info("My farming experience tells me the fruit will start to bear in roughly [minutes > 0 ? "[minutes] minute[minutes != 1 ? "s" : ""]" : ""][minutes > 0 && secs > 0 ? " and " : ""][secs > 0 ? "[secs] second[secs != 1 ? "s" : ""]" : ""].")
+			. += span_info("My farming experience tells me the fruit will start to bear in roughly [minutes > 0 ? "[minutes] minute\s" : ""][minutes > 0 && secs > 0 ? " and " : ""][secs > 0 ? "[secs] second\s" : ""].")
 
 /obj/structure/eoran_pomegranate_tree/proc/reset_care()
 	//The benefit of rare offerings are kept through harvests.
